@@ -16,4 +16,4 @@ shared:
 	$(CC) -fPIC -shared -o $(LIB_NAME).so $(LIB_NAME).o
 
 clean:
-	rm -f *.o
+	rm -f *.o *.so
