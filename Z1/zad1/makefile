@@ -1,19 +1,17 @@
-CC = gcc -Wall
-LIB_NAME = array
+CFLAGS += -Wall -g
+CC = gcc
 
-all: static shared
+all: libarray.a libarray.so
 
-static:
-	# compilation
-	$(CC) -c $(LIB_NAME).c -o $(LIB_NAME).o
+book.o: array.c array.h
+	$(CC) $(CFLAGS) -c array.c
 
-	# build static library
-	ar rcs $(LIB_NAME).a $(LIB_NAME).o
+libarray.a: array.o
+	ar rcs $@ $^
 
-shared:
-	# build shared library .so
-	$(CC) -fPIC -c $(LIB_NAME).c -o $(LIB_NAME).o
-	$(CC) -fPIC -shared -o $(LIB_NAME).so $(LIB_NAME).o
+libarray.so: array.c array.h
+	$(CC) -fPIC -shared array.c -o $@
+
 
 clean:
-	rm -f *.o *.so
+	-rm -rf *.o *.a *.so
