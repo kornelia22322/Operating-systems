@@ -5,15 +5,19 @@
 #include <sys/times.h>
 
 void test_dynamic_library(int n, int sizeofBlock, int array[], int numofOperations);
-void test_static_library(int n, int sizeofBlock, int array[], int numofOperations);
+void test_static_library(int array[], int numofOperations);
 char* generate_data(int sizeofBlock);
 char generate_random_char();
 struct CharArray* initialize_dynamic_array(int n, int sizeofBlock);
 int generate_random_num(int maxval);
 void execute_operations_dynamic(int array[], int numofOperations, struct CharArray* charArray);
+void execute_operations_static(int array[], int numofOperations);
 void realloc_blocks_sequentially(struct CharArray* charArray);
 void realloc_blocks_alternately(struct CharArray* charArray);
 int* getRange(struct CharArray* charArray);
+
+void realloc_blocks_sequentially_static();
+void realloc_blocks_alternately_static();
 
 
 void print_time(clock_t startTime,clock_t stopTime, struct tms a, struct tms b){
@@ -34,13 +38,71 @@ void test_library(int n, int sizeofBlock, int memAllocation, int array[], int nu
     if(memAllocation) {
         test_dynamic_library(n, sizeofBlock, array, numofOperations);
     } else {
-        //test_static_library(n, sizeofBlock, array, numofOperations);
+        test_static_library(array, numofOperations);
+    }
+}
+
+void test_static_library(int array[], int numofOperations) {
+    execute_operations_static(array, numofOperations);
+}
+
+void execute_operations_static(int array[], int numofOperations) {
+    int i;
+    for(i = 0; i < numofOperations; i++) {
+        clock_t startTime,stopTime;
+        struct tms a,b;
+        switch (array[i]) {
+            case 1:
+                printf("You cannot allocate memory for static array. It already exists on the stack.");
+                break;
+            case 2:
+                //*************************************
+                printf("\ntesting node searching - static allocation\n");
+                startTime = clock();
+                times(&a);
+
+                search_node_within_arr(generate_random_num(100));
+
+                stopTime = clock();
+                times(&b);
+                print_time(startTime,stopTime,a,b);
+                //**************************************
+                break;
+            case 3:
+                //*************************************
+                printf("\ntesting realloc_blocks_sequentially - static allocation\n");
+                startTime = clock();
+                times(&a);
+
+                realloc_blocks_sequentially_static();
+
+                stopTime = clock();
+                times(&b);
+                print_time(startTime,stopTime,a,b);
+                //**************************************
+
+                break;
+            case 4:
+
+                //*************************************
+                printf("\ntesting realloc_blocks_alternately - static allocation\n");
+                startTime = clock();
+                times(&a);
+
+                realloc_blocks_alternately_static();
+
+
+                stopTime = clock();
+                times(&b);
+                print_time(startTime,stopTime,a,b);
+                //**************************************
+                break;
+        }
     }
 }
 
 void test_dynamic_library(int n, int sizeofBlock, int array[], int numofOperations) {
     if(array[0] == 1) {
-
         //*************************************
         //create - start time
         printf("\ntesting create array - dynamic allocation\n");
@@ -178,11 +240,44 @@ int generate_random_num(int maxval) {
     return r;
 }
 
+/************************************************************************/
+
+/* Operations on static array */
+void realloc_blocks_sequentially_static() {
+    int starting_block = generate_random_num(DIM_X_ARRAY);
+    int num_of_blocks = generate_random_num(DIM_X_ARRAY - starting_block);
+    int i;
+    for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+        remove_block_from_static_array(i);
+    }
+    for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+        char* data = generate_data(DIM_Y_ARRAY);
+        struct Node* node = create_node(data, DIM_Y_ARRAY);
+        add_block_to_static_array(node, i);
+    }
+}
+
+void realloc_blocks_alternately_static() {
+    int starting_block = generate_random_num(DIM_X_ARRAY);
+    int num_of_blocks = generate_random_num(DIM_X_ARRAY - starting_block);
+    int i;
+    for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+        remove_block_from_static_array(i);
+        char* data = generate_data(DIM_Y_ARRAY);
+        struct Node* node = create_node(data, DIM_Y_ARRAY);
+        add_block_to_static_array(node, i);
+    }
+}
+
+/************************************************************************/
+
 int main(void) {
     srand(time(NULL));
-    int* array = (int*) calloc(3, sizeof (int));
+    int* array = (int*) calloc(4, sizeof (int));
     array[0] = 1;
     array[1] = 2;
-    array[2] = 4;
-    test_library(10000, 5000, 1, array, 3);
+    array[2] = 3;
+    array[3] = 4;
+    test_library(10000, 5000, 1, array, 4);
+    test_library(10000, 5000, 0, array, 4);
 }
