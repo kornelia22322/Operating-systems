@@ -4,8 +4,8 @@
 #include <time.h>
 #include <sys/times.h>
 
-void test_dynamic_library(int n, int sizeofBlock, int array[], int numofOperations);
-void test_static_library(int array[], int numofOperations);
+void test_dynamic_mem_allocation(int n, int sizeofBlock, int array[], int numofOperations);
+void test_static_mem_allocation(int array[], int numofOperations);
 char* generate_data(int sizeofBlock);
 char generate_random_char();
 struct CharArray* initialize_dynamic_array(int n, int sizeofBlock);
@@ -36,13 +36,13 @@ numofOperations - numbers of operations in array */
 .. */
 void test_library(int n, int sizeofBlock, int memAllocation, int array[], int numofOperations) {
     if(memAllocation) {
-        test_dynamic_library(n, sizeofBlock, array, numofOperations);
+        test_dynamic_mem_allocation(n, sizeofBlock, array, numofOperations);
     } else {
-        test_static_library(array, numofOperations);
+        test_static_mem_allocation(array, numofOperations);
     }
 }
 
-void test_static_library(int array[], int numofOperations) {
+void test_static_mem_allocation(int array[], int numofOperations) {
     execute_operations_static(array, numofOperations);
 }
 
@@ -61,7 +61,16 @@ void execute_operations_static(int array[], int numofOperations) {
                 startTime = clock();
                 times(&a);
 
-                search_node_within_arr(generate_random_num(100));
+                #ifndef DYNLAB
+                    search_node_within_arr(generate_random_num(100));
+                #else
+                    void *handle;
+                    handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
+
+                    void  (*search_node_within_arr)(int);
+                    search_node_within_arr = (void (*)(int)) dlsym(handle, "search_node_within_arr");
+                    (*search_node_within_arr)(generate_random_num(100));
+                #endif
 
                 stopTime = clock();
                 times(&b);
@@ -101,7 +110,7 @@ void execute_operations_static(int array[], int numofOperations) {
     }
 }
 
-void test_dynamic_library(int n, int sizeofBlock, int array[], int numofOperations) {
+void test_dynamic_mem_allocation(int n, int sizeofBlock, int array[], int numofOperations) {
     if(array[0] == 1) {
         //*************************************
         //create - start time

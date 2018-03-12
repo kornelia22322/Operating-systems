@@ -12,6 +12,5 @@ libarray.a: array.o
 libarray.so: array.c array.h
 	$(CC) -fPIC -shared array.c -o $@
 
-
 clean:
 	-rm -rf *.o *.a *.so

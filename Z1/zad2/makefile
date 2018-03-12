@@ -8,13 +8,13 @@ MAIN = $(MAINDIR)/main.c
 all: main_sta
 
 main_sta: $(MAIN) $(LIBDIR)/libarray.a
-	$(CC) $(CFLAGS) -static -DSTALAB=1 -o $@ $(MAIN) -L$(LIBDIR) -larray
+	$(CC) $(CFLAGS) -DSTALAB=1 -o $@ $(MAIN) -L$(LIBDIR) -larray
 
 $(LIBDIR)/libarray.a:
 	cd $(LIBDIR) && $(MAKE) libarray.a
 
 clean:
-	-rm -rf *.o main_sta 
+	-rm -rf *.o main_sta
 
 clean_all:
 	$(MAKE) clean
