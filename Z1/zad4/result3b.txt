@@ -1,0 +1,243 @@
+*************************************************************************
+-O
+
+
+testing create array - dynamic allocation
+real:0.680518 user:0.000066 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.558251 user:0.000056 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.188531 user:0.000019 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000752 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.014697 user:0.000002 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.037194 user:0.000003 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.676906 user:0.000067 sys:0.000000
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.562824 user:0.000057 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.265509 user:0.000026 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000776 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.079858 user:0.000008 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.014228 user:0.000002 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.677627 user:0.000064 sys:0.000003
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.026249 user:0.000003 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.105235 user:0.000010 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000755 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.000529 user:0.000000 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.022301 user:0.000003 sys:0.000000
+
+*************************************************************************
+-O2
+
+testing create array - dynamic allocation
+real:0.634450 user:0.000063 sys:0.000000
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.544456 user:0.000054 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.030101 user:0.000003 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000752 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.003554 user:0.000000 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.021054 user:0.000003 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.629467 user:0.000061 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.051878 user:0.000005 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.007813 user:0.000001 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000759 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.028768 user:0.000003 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.012222 user:0.000001 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.651694 user:0.000063 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.280894 user:0.000028 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.108636 user:0.000011 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000754 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.020246 user:0.000002 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.009974 user:0.000001 sys:0.000000
+
+*************************************************************************
+-O3
+
+testing create array - dynamic allocation
+real:0.641620 user:0.000060 sys:0.000003
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.162863 user:0.000017 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.006954 user:0.000000 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000752 user:0.000001 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.025141 user:0.000002 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.031004 user:0.000003 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.610231 user:0.000059 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.024527 user:0.000002 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.155751 user:0.000016 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000753 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.005772 user:0.000001 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.029550 user:0.000003 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.673546 user:0.000066 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.196740 user:0.000019 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.076360 user:0.000008 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.001001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.000276 user:0.000000 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.021144 user:0.000002 sys:0.000000
+
+*************************************************************************
+-Os
+
+testing create array - dynamic allocation
+real:0.708509 user:0.000069 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.666977 user:0.000066 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.607225 user:0.000061 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000755 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.064425 user:0.000007 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.006689 user:0.000000 sys:0.000000
+
+testing create array - dynamic allocation
+real:0.767677 user:0.000075 sys:0.000001
+
+testing node searching - dynamic allocation
+real:0.000001 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - dynamic allocation
+real:0.162733 user:0.000016 sys:0.000000
+
+testing realloc_blocks_alternately - dynamic allocation
+real:0.184489 user:0.000019 sys:0.000000
+You cannot allocate memory for static array. It already exists on the stack.
+testing node searching - static allocation
+real:0.000759 user:0.000000 sys:0.000000
+
+testing realloc_blocks_sequentially - static allocation
+real:0.016168 user:0.000002 sys:0.000000
+
+testing realloc_blocks_alternately - static allocation
+real:0.004214 user:0.000000 sys:0.000000
