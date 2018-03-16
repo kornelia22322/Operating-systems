@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <sys/times.h>
+#include <dlfcn.h>
 
 void test_dynamic_mem_allocation(int n, int sizeofBlock, int array[], int numofOperations);
 void test_static_mem_allocation(int array[], int numofOperations);
@@ -67,8 +68,8 @@ void execute_operations_static(int array[], int numofOperations) {
                     void *handle;
                     handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
 
-                    void  (*search_node_within_arr)(int);
-                    search_node_within_arr = (void (*)(int)) dlsym(handle, "search_node_within_arr");
+                    int  (*search_node_within_arr)(int);
+                    search_node_within_arr = (int (*)(int)) dlsym(handle, "search_node_within_arr");
                     (*search_node_within_arr)(generate_random_num(100));
                 #endif
 
@@ -146,8 +147,6 @@ void execute_operations_dynamic(int array[], int numofOperations, struct CharArr
                 startTime = clock();
                 times(&a);
 
-                search_node(charArray, generate_random_num(100));
-
                 stopTime = clock();
                 times(&b);
                 print_time(startTime,stopTime,a,b);
@@ -190,10 +189,31 @@ void realloc_blocks_alternately(struct CharArray* charArray) {
     int* range = getRange(charArray);
     int size_of_single_block = charArray->array[0]->n;
     int i;
-    for(i = range[0]; i < range[1]; i++) {
-        remove_block(i, charArray);
-        add_block(i, charArray, create_node(generate_data(size_of_single_block), size_of_single_block));
-    }
+
+    #ifndef DYNLAB
+        for(i = range[0]; i < range[1]; i++) {
+            remove_block(i, charArray);
+            add_block(i, charArray, create_node(generate_data(size_of_single_block), size_of_single_block));
+        }
+    #else
+        void *handle;
+        handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
+
+        for(i = range[0]; i < range[1]; i++) {
+            void  (*remove_block)(int, struct CharArray*);
+            remove_block = (void (*)(int, struct CharArray*)) dlsym(handle, "remove_block");
+            (*remove_block)(i, charArray);
+
+            struct Node* (*create_node)(char*, int);
+            create_node = (struct Node* (*)(char*, int)) dlsym(handle, "create_node");
+            struct Node* node = (*create_node)(generate_data(size_of_single_block), size_of_single_block);
+
+            void  (*add_block)(int, struct CharArray*, struct Node*);
+            add_block = (void (*)(int, struct CharArray*, struct Node*)) dlsym(handle, "add_block");
+            (*add_block)(i, charArray, node);
+        }
+
+    #endif
 }
 
 int* getRange(struct CharArray* charArray) {
@@ -212,21 +232,61 @@ void realloc_blocks_sequentially(struct CharArray* charArray) {
     int* range = getRange(charArray);
     int size_of_single_block = charArray->array[0]->n;
     int i;
-    for(i = range[0]; i < range[1]; i++) {
-        remove_block(i, charArray);
-    }
-    for(i = range[0]; i < range[1]; i++) {
-        add_block(i, charArray, create_node(generate_data(size_of_single_block), size_of_single_block));
-    }
+
+    #ifndef DYNLAB
+        for(i = range[0]; i < range[1]; i++) {
+            remove_block(i, charArray);
+        }
+        for(i = range[0]; i < range[1]; i++) {
+            add_block(i, charArray, create_node(generate_data(size_of_single_block), size_of_single_block));
+        }
+    #else
+        void *handle;
+        handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
+
+        for(i = range[0]; i < range[1]; i++) {
+            void  (*remove_block)(int, struct CharArray*);
+            remove_block = (void (*)(int, struct CharArray*)) dlsym(handle, "remove_block");
+            (*remove_block)(i, charArray);
+        }
+        for(i = range[0]; i < range[1]; i++) {
+            struct Node* (*create_node)(char*, int);
+            create_node = (struct Node* (*)(char*, int)) dlsym(handle, "create_node");
+            struct Node* node = (*create_node)(generate_data(size_of_single_block), size_of_single_block);
+
+            void  (*add_block)(int, struct CharArray*, struct Node*);
+            add_block = (void (*)(int, struct CharArray*, struct Node*)) dlsym(handle, "add_block");
+            (*add_block)(i, charArray, node);
+        }
+    #endif
 }
 
 struct CharArray* initialize_dynamic_array(int n, int sizeofBlock) {
-    struct CharArray* charArray = create_char_arr(n);
-    int i;
-    for(i = 0; i < n; i++) {
-        char* data = generate_data(sizeofBlock);
-        addNodeToCharArray(charArray, data, sizeofBlock, i);
-    }
+    struct CharArray* charArray;
+    #ifndef DYNLAB
+        charArray = create_char_arr(n);
+        int i;
+        for(i = 0; i < n; i++) {
+            char* data = generate_data(sizeofBlock);
+            addNodeToCharArray(charArray, data, sizeofBlock, i);
+        }
+    #else
+        void *handle;
+        handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
+
+        struct CharArray*  (*create_char_arr)(int);
+        create_char_arr = (struct CharArray* (*)(int)) dlsym(handle, "create_char_arr");
+        charArray = (*create_char_arr)(n);
+
+        int i;
+        for(i = 0; i < n; i++) {
+            char* data = generate_data(sizeofBlock);
+            void  (*addNodeToCharArray)(struct CharArray*, char* data, int sizeofBlock, int n);
+            addNodeToCharArray = (void (*)(struct CharArray*, char* data, int sizeofBlock, int n)) dlsym(handle, "addNodeToCharArray");
+            (*addNodeToCharArray)(charArray, data, sizeofBlock, i);
+        }
+    #endif
+
     return charArray;
 }
 
@@ -256,26 +316,73 @@ void realloc_blocks_sequentially_static() {
     int starting_block = generate_random_num(DIM_X_ARRAY);
     int num_of_blocks = generate_random_num(DIM_X_ARRAY - starting_block);
     int i;
-    for(i = starting_block; i < starting_block + num_of_blocks; i++) {
-        remove_block_from_static_array(i);
-    }
-    for(i = starting_block; i < starting_block + num_of_blocks; i++) {
-        char* data = generate_data(DIM_Y_ARRAY);
-        struct Node* node = create_node(data, DIM_Y_ARRAY);
-        add_block_to_static_array(node, i);
-    }
+    #ifndef DYNLAB
+        for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+            remove_block_from_static_array(i);
+        }
+        for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+            char* data = generate_data(DIM_Y_ARRAY);
+            struct Node* node = create_node(data, DIM_Y_ARRAY);
+            add_block_to_static_array(node, i);
+        }
+    #else
+        void *handle;
+        handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
+
+        for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+            void  (*remove_block_from_static_array)(int);
+            remove_block_from_static_array = (void (*)(int)) dlsym(handle, "remove_block_from_static_array");
+            (*remove_block_from_static_array)(i);
+        }
+        for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+            char* data = generate_data(DIM_Y_ARRAY);
+
+            struct Node* (*create_node)(char*, int);
+            create_node = (struct Node* (*)(char*, int)) dlsym(handle, "create_node");
+            struct Node* node = (*create_node)(data, DIM_Y_ARRAY);
+
+            void  (*add_block_to_static_array)(struct Node*, int);
+            add_block_to_static_array = (void (*)(struct Node*, int)) dlsym(handle, "add_block_to_static_array");
+            (*add_block_to_static_array)(node, i);
+        }
+    #endif
+
+
+
 }
 
 void realloc_blocks_alternately_static() {
     int starting_block = generate_random_num(DIM_X_ARRAY);
     int num_of_blocks = generate_random_num(DIM_X_ARRAY - starting_block);
     int i;
-    for(i = starting_block; i < starting_block + num_of_blocks; i++) {
-        remove_block_from_static_array(i);
-        char* data = generate_data(DIM_Y_ARRAY);
-        struct Node* node = create_node(data, DIM_Y_ARRAY);
-        add_block_to_static_array(node, i);
-    }
+
+    #ifndef DYNLAB
+        for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+            remove_block_from_static_array(i);
+            char* data = generate_data(DIM_Y_ARRAY);
+            struct Node* node = create_node(data, DIM_Y_ARRAY);
+            add_block_to_static_array(node, i);
+        }
+    #else
+        void *handle;
+        handle = dlopen("../zad1/libarray.so", RTLD_LAZY);
+        for(i = starting_block; i < starting_block + num_of_blocks; i++) {
+            void  (*remove_block_from_static_array)(int);
+            remove_block_from_static_array = (void (*)(int)) dlsym(handle, "remove_block_from_static_array");
+            (*remove_block_from_static_array)(i);
+
+            char* data = generate_data(DIM_Y_ARRAY);
+
+            struct Node* (*create_node)(char*, int);
+            create_node = (struct Node* (*)(char*, int)) dlsym(handle, "create_node");
+            struct Node* node = (*create_node)(data, DIM_Y_ARRAY);
+
+            void  (*add_block_to_static_array)(struct Node*, int);
+            add_block_to_static_array = (void (*)(struct Node*, int)) dlsym(handle, "add_block_to_static_array");
+            (*add_block_to_static_array)(node, i);
+        }
+
+    #endif
 }
 
 /************************************************************************/
