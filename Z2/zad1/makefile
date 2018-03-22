@@ -15,3 +15,13 @@ clean:
 
 generate:
 	./main generate $(DATA_FILE) $(WIDTH) $(NUMBER)
+
+test_sort_sys:
+	cp $(DATA_FILE) $(TEST_FILE)
+	echo "\nsort sys" >> $(RESULT_FILE)
+	$(TIME_S) ./main sort sys $(TEST_FILE) $(WIDTH) $(NUMBER)
+
+test_copy_sys:
+	cp $(DATA_FILE) $(TEST_FILE)
+	echo "\ncopy sys" >> $(RESULT_FILE)
+	$(TIME_S) ./main copy sys $(TEST_FILE)
