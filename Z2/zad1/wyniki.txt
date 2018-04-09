@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* 4 - size of record, 1000 - number of records */
 
 sort sys
@@ -98,3 +99,17 @@ real 0.09 user 0.00 sys 0.08
 
 copy lib
 real 0.09 user 0.01 sys 0.08
+=======
+
+sort sys
+real 0.00 user 0.00 sys 0.00
+
+sort sys
+real 0.00 user 0.00 sys 0.00
+
+sort sys
+real 0.00 user 0.00 sys 0.00
+
+sort sys
+real 0.00 user 0.00 sys 0.00
+>>>>>>> 94a8d61d3531b48e9be606ebbd450249caace4c5
