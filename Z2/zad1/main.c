@@ -21,6 +21,7 @@ struct Input_set{
     enum Op_type op_type;
     enum In_type in_type;
     char * filename;
+    char * fileToCopy;
     int records_number;
     int records_width;
 };
@@ -76,31 +77,34 @@ int parse_input(struct Input_set* input_set, int argc, char* argv[]){
         input_set->filename = argv[i];
         i++;
     }
-    if(input_set->op_type!=copy_type) {
-        if(argc == i){
-            printf("Brak %d argumentu(wielkosc rekordu)!\n",i);
+    if(input_set->op_type==copy_type) {
+        input_set->fileToCopy = argv[i];
+        i++;
+
+    }
+    if(argc == i){
+        printf("Brak %d argumentu(wielkosc rekordu)!\n",i);
+        return 1;
+    }
+    else{
+        input_set->records_width = atoi(argv[i]);
+        if(input_set->records_width <= 0){
+            printf("Wartosc %d argumentu musi byc wieksza od zera\n",i);
             return 1;
         }
-        else{
-            input_set->records_width = atoi(argv[i]);
-            if(input_set->records_width <= 0){
-                printf("Wartosc %d argumentu musi byc wieksza od zera\n",i);
-                return 1;
-            }
-            i++;
-        }
-        if(argc == i){
-            printf("Brak %d argumentu(ilosc rekordow)!\n",i);
+        i++;
+    }
+    if(argc == i){
+        printf("Brak %d argumentu(ilosc rekordow)!\n",i);
+        return 1;
+    }
+    else{
+        input_set->records_number = atoi(argv[i]);
+        if(input_set->records_number <= 0){
+            printf("Wartosc %d argumentu musi byc wieksza od zera\n",i);
             return 1;
         }
-        else{
-            input_set->records_number = atoi(argv[i]);
-            if(input_set->records_number <= 0){
-                printf("Wartosc %d argumentu musi byc wieksza od zera\n",i);
-                return 1;
-            }
-            i++;
-        }
+        i++;
     }
     return 0;
 }
@@ -227,38 +231,112 @@ int sys_insertion_sort(char * filename,int records_number,int records_width) {
     return 0;
 }
 
-int copy_file_sys_func(char* filename) {
-    char block[1024];
-    int liczyt;
+int lib_insertion_sort(char * filename,int records_number,int records_width) {
+    FILE* file = fopen(filename,"r+");
+    if(file == NULL){
+        perror(filename);
+        return 1;
+    }
+    unsigned char *row_a = (unsigned char*) calloc(records_width,sizeof (unsigned char));
+    unsigned char *row_b = (unsigned char*) calloc(records_width,sizeof (unsigned char));
+
+    int i;
+    for(i = 1; i < records_number; i++) {
+        int j = i - 1;
+        fseek(file,i*records_width,SEEK_SET);
+        ssize_t result = fread(row_a,1,records_width,file);
+        if (result < 0) {
+            perror(filename);
+            fclose(file);
+            free(row_a);
+            free(row_b);
+            return 1;
+        }
+        fseek(file,j*records_width,SEEK_SET);
+        result = fread(row_b,1,records_width,file);
+
+        if (result < 0) {
+            perror(filename);
+            fclose(file);
+            free(row_a);
+            free(row_b);
+            return 1;
+        }
+
+        while(row_b[0] > row_a[0] && j>=0){
+            fseek(file,(j+1)*records_width,SEEK_SET);
+            result = fwrite(row_b,1,records_width,file);
+            if (result < 0){
+                perror(filename);
+                fclose(file);
+                free(row_a);
+                free(row_b);
+                return 1;
+            }
+            j--;
+            if(j>=0) {
+                fseek(file,j*records_width,SEEK_SET);
+                result = fread(row_b,1,records_width,file);
+            }
+            if (result < 0){
+                perror(filename);
+                fclose(file);
+                free(row_a);
+                free(row_b);
+                return 1;
+            }
+        }
+
+
+        fseek(file,(j+1)*records_width,SEEK_SET);
+        result = fwrite(row_a,1,records_width,file);
+    }
+    return 0;
+}
+
+int copy_file_sys_func(char* filename, char* outfilename, int records_number,int records_width) {
+    char* block = (char*) calloc(records_width, sizeof (char));
+    int liczyt = 0;
+    int readed_already = 0;
     int we, wy;
     we=open(filename, O_RDONLY);
     if(we < 0) {
         close(we);
         return 1;
     }
-    wy=open("copied_data_sys",O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+    wy=open(outfilename,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
     if(we < 0) {
         close(wy);
         return 1;
     }
-    while((liczyt=read(we,block,sizeof(block)))>0)
+    while((liczyt=read(we,block,sizeof(char)*records_width))>0 && readed_already < records_number) {
+        readed_already = readed_already + 1;
         write(wy,block,liczyt);
+    }
 
     return 0;
 }
 
-void copy_file_lib_func() {
-    char blok[1024];
-    int liczyt;
+int copy_file_lib_func(char* filename, char* outfilename, int records_number,int records_width) {
+    char* block = (char*) calloc(records_width, sizeof (char));
+    int liczyt = 0;
+    int readed_already = 0;
 
-    FILE* in_file = fopen("we_lib", "r");
-    FILE* out_file = fopen("wy_lib", "rb+");
+    FILE* in_file = fopen(filename, "r");
+    if(in_file == NULL){
+        perror(filename);
+        return 1;
+    }
+    FILE* out_file = fopen(outfilename, "rb+");
     if(out_file == NULL) //if file does not exist, create it
     {
-        out_file = fopen("wy_lib", "wb");
+        out_file = fopen(outfilename, "wb");
     }
-    while((liczyt=fread(blok,sizeof(char),sizeof(blok),in_file))>0)
-        fwrite(blok,sizeof(char),liczyt,out_file);
+    while((liczyt=fread(block,sizeof(char),sizeof(char)*records_width,in_file))>0 && readed_already < records_number) {
+        readed_already++;
+        fwrite(block,sizeof(char),liczyt,out_file);
+    }
+    return 0;
 }
 
 int raiseError(char* fileName, unsigned char* row_a, unsigned char* row_b, int file) {
@@ -271,12 +349,12 @@ int raiseError(char* fileName, unsigned char* row_a, unsigned char* row_b, int f
 
 int sort(char *filename, int number, int width, enum In_type type) {
     if(type == sys) return sys_insertion_sort(filename,number,width);
-    return 0;
+    else return lib_insertion_sort(filename, number, width);
 }
 
-int copy(char *filename, enum In_type type) {
-    if(type == sys) return copy_file_sys_func(filename);
-    return 0;
+int copy(char *filename, char* fileToCopy, int records_width, int records_number, enum In_type type) {
+    if(type == sys) return copy_file_sys_func(filename, fileToCopy, records_number, records_width);
+    else return copy_file_lib_func(filename, fileToCopy, records_number, records_width);
 }
 
 
@@ -296,9 +374,8 @@ int main(int argc,char * argv[]){
                 result = sort(input_set->filename,input_set->records_number,input_set->records_width,input_set->in_type);
                 break;
             case copy_type:
-                result = sort(input_set->filename,input_set->records_number,input_set->records_width,input_set->in_type);
+                result = copy(input_set->filename, input_set->fileToCopy, input_set->records_width,input_set->records_number, input_set->in_type);
                 break;
-
         }
     }
     free(input_set);

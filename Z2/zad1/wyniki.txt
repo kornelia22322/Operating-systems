@@ -1,0 +1,100 @@
+/* 4 - size of record, 1000 - number of records */
+
+sort sys
+real 0.72 user 0.13 sys 0.59
+
+sort lib
+real 1.07 user 0.22 sys 0.85
+
+copy sys
+real 0.00 user 0.00 sys 0.00
+
+copy lib
+real 0.00 user 0.00 sys 0.00
+
+/* 4 - size of record, 3000 - number of records */
+
+sort sys
+real 6.95 user 1.03 sys 5.91
+
+sort lib
+real 8.47 user 1.81 sys 6.66
+
+copy sys
+real 0.01 user 0.00 sys 0.00
+
+copy lib
+real 0.00 user 0.00 sys 0.00
+
+
+/* 512 - size of record, 500 - number of records */
+
+sort sys
+real 0.23 user 0.04 sys 0.18
+
+sort lib
+real 0.29 user 0.05 sys 0.24
+
+copy sys
+real 0.00 user 0.00 sys 0.00
+
+copy lib
+real 0.00 user 0.00 sys 0.00
+
+
+/* 512 - size of record, 3000 - number of records */
+
+sort sys
+real 7.16 user 0.96 sys 6.20
+
+sort lib
+real 8.92 user 1.79 sys 7.12
+
+copy sys
+real 0.01 user 0.00 sys 0.01
+
+copy lib
+real 0.00 user 0.00 sys 0.00
+
+
+/* 4096 - size of record, 3000 - number of records */
+
+sort sys
+real 8.46 user 0.91 sys 7.53
+
+sort lib
+real 8.63 user 1.43 sys 7.19
+
+copy sys
+real 0.01 user 0.00 sys 0.01
+
+copy lib
+real 0.01 user 0.00 sys 0.01
+
+/* 4096 - size of record, 6000 - number of records */
+
+sort sys
+real 35.50 user 4.09 sys 31.23
+
+sort lib
+real 37.39 user 5.47 sys 31.84
+
+copy sys
+real 0.03 user 0.00 sys 0.02
+
+copy lib
+real 0.03 user 0.00 sys 0.02
+
+/* 8192 - size of record, 10000 - number of records */ 
+
+sort sys
+real 132.59 user 11.36 sys 120.65
+
+sort lib
+real 145.18 user 16.18 sys 127.68
+
+copy sys
+real 0.09 user 0.00 sys 0.08
+
+copy lib
+real 0.09 user 0.01 sys 0.08
