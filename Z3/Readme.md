@@ -1,5 +1,7 @@
 Zadanie - zestaw 3
+
 Tworzenie procesów. Środowisko procesu, sterowanie procesami.
+
 Zadanie 1. (20%)
 Zmodyfikuj zadanie 2 z poprzedniego zestawu w taki sposób, iż przeszukiwanie w każdym z odnalezionych (pod)katalogow powinno odbywać sie w osobnym procesie.  
 
