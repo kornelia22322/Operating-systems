@@ -1,0 +1,3 @@
+ls -l -a
+echo Ahoi
+./sample
