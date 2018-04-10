@@ -91,6 +91,10 @@ int main(int argc, char **argv) {
 
         int status;
         wait(&status);
+        if (status) {
+           printf( "Error while executing");
+           return 1;
+        }
         line_number++;
 
     }
