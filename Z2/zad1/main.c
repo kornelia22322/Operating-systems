@@ -304,7 +304,7 @@ int copy_file_sys_func(char* filename, char* outfilename, int records_number,int
         close(we);
         return 1;
     }
-    wy=open(outfilename,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+    wy=open(outfilename,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR|O_APPEND);
     if(we < 0) {
         close(wy);
         return 1;

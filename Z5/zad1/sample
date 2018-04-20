@@ -1,0 +1,4 @@
+ls -al | sort | head -n 2
+ls -l | head -n 1
+ls -l | grep main
+ls -l
