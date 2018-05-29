@@ -3,10 +3,11 @@
 #include <string.h>
 
 int numberOfThreads;
-char* originFileName;
-
 int H, W, C, M, P;
 unsigned char **I; //picture
+float **K; //filter
+
+pthread_t *threads; //threads array
 
 void load_picture(char *file_path) {
     FILE *file;
@@ -36,11 +37,23 @@ void load_picture(char *file_path) {
         }
         printf("\n");
     }
-
     fclose(file);
-
 }
 
+void load_filter(char *file_path) {
+    FILE *file;
+    file = fopen(file_path, "r");
+    fscanf(file, "%d", &C);
+    K = (float**) malloc(C * sizeof(float **));
+    for (int i = 0; i < C; ++i)
+        K[i] = (float*) malloc(C * sizeof(float *));
+
+    for (int i = 0; i < C; ++i)
+        for (int j = 0; j < C; ++j)
+            fscanf(file, "%f", &K[i][j]);
+
+    fclose(file);
+}
 
 /*
 char** readPGMFileToArray(FILE* file) {
@@ -105,10 +118,14 @@ char** readPGMFileToArray(FILE* file) {
 int main(int argc, char* argv[]) {
     numberOfThreads = (int) strtol(argv[1], NULL, 10);
     printf("%d\n", numberOfThreads);
-    originFileName = argv[2];
-
-    printf("%s\n", originFileName);
+    char* originFileName = argv[2];
+    char *filter_file_path = argv[3];
+    char *result_file_path = argv[4];
     load_picture(originFileName);
+    load_filter(filter_file_path);
+
+    threads = (pthread_t *) malloc(numberOfThreads * sizeof(pthread_t));
+
 
 
 /*
