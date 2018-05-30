@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+#include <sys/times.h>
+#include <math.h>
+
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 int numberOfThreads;
 int H, W, C, M, P;
@@ -8,6 +14,7 @@ unsigned char **I; //picture
 float **K; //filter
 
 pthread_t *threads; //threads array
+unsigned char **J; //picture with filter
 
 void load_picture(char *file_path) {
     FILE *file;
@@ -38,6 +45,30 @@ void load_picture(char *file_path) {
         printf("\n");
     }
     fclose(file);
+}
+
+void *filter_function(void *args) {
+    int tmp = (int) ceil(C / 2);
+    int whoIAm = *(int *) args;
+    double s;
+
+    int start = H * whoIAm / numberOfThreads;
+    int end = H * (whoIAm + 1) / numberOfThreads;
+
+    for(int i = start; i < end; i++) {
+        for(int j = 0; j < H; j++) {
+            s = 0;
+            for (int h = 0; h < C; ++h) {
+                for (int w = 0; w < C; ++w) {
+                    int a = MIN((H - 1), MAX(0, i - tmp + h));
+                    int b = MIN((W - 1), MAX(0, j - tmp + w));
+                    s += I[a][b] * K[h][w];
+                }
+            }
+            J[i][j] = (unsigned char) MAX(0, MIN(round(s), 255));
+        }
+    }
+    return NULL;
 }
 
 void load_filter(char *file_path) {
@@ -126,7 +157,19 @@ int main(int argc, char* argv[]) {
 
     threads = (pthread_t *) malloc(numberOfThreads * sizeof(pthread_t));
 
+    J = (unsigned char**) malloc(W * sizeof(unsigned char *));
+    for (int i = 0; i < H; ++i)
+        J[i] = (unsigned char*) malloc(H * sizeof(unsigned char *));
 
+    for (int i = 0; i < numberOfThreads; ++i) {
+        int *arg = (int*) malloc(sizeof(int));
+        *arg = i;
+        pthread_create(&threads[i], NULL, filter_function, arg);
+    }
+    for (int i = 0; i < numberOfThreads; ++i) {
+        void *x;
+        pthread_join(threads[i], &x);
+    }
 
 /*
     while (fgets(line, sizeof(line), file)) {
