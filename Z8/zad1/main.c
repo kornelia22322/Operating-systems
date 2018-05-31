@@ -37,18 +37,35 @@ void load_picture(char *file_path) {
         for (int j = 0; j < H; ++j)
             fscanf(file, "%d", &I[i][j]);
 
-
+    /*
     for (int i = 0; i < W; ++i) {
         for (int j = 0; j < H; ++j) {
             printf("%d ", I[i][j]);
         }
         printf("\n");
+    } */
+    fclose(file);
+}
+
+void save_result(char *file_path) {
+    FILE *file;
+    if ((file = fopen(file_path, "w")) == NULL) {
+        printf("Cannot open output file...\n");
+        exit(2);
+    }
+    fprintf(file, "P%d\n%d %d\n%d\n", P == 1 ? 2 : 3, W, H, M);
+    int i = 0;
+
+    for (int y = 0; y < H; ++y) {
+        for (int x = 0; x < W; ++x, ++i) {
+            fprintf(file, "%d ", J[y][x]);
+        }
     }
     fclose(file);
 }
 
 void *filter_function(void *args) {
-    int tmp = (int) ceil(C / 2);
+    int tmp = (int) floor(C / 2);
     int whoIAm = *(int *) args;
     double s;
 
@@ -170,6 +187,8 @@ int main(int argc, char* argv[]) {
         void *x;
         pthread_join(threads[i], &x);
     }
+
+    save_result(result_file_path);
 
 /*
     while (fgets(line, sizeof(line), file)) {
