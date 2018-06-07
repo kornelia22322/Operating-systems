@@ -1,0 +1,72 @@
+Filtering with filter of size : 20, with usage of 1 threads time:	
+
+REAL: 0.769005s	USER: 0.768856s	SYSTEM: 0.000000s
+Filtering with filter of size : 20, with usage of 2 threads time:	
+
+REAL: 0.404450s	USER: 0.803266s	SYSTEM: 0.000000s
+Filtering with filter of size : 20, with usage of 4 threads time:	
+
+REAL: 0.420230s	USER: 1.469175s	SYSTEM: 0.004165s
+Filtering with filter of size : 20, with usage of 8 threads time:	
+
+REAL: 0.402204s	USER: 1.495734s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 1 threads time:	
+
+REAL: 0.196452s	USER: 0.196400s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 2 threads time:	
+
+REAL: 0.100053s	USER: 0.200008s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 4 threads time:	
+
+REAL: 0.109464s	USER: 0.377765s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 8 threads time:	
+
+REAL: 0.107609s	USER: 0.391260s	SYSTEM: 0.000298s
+Filtering with filter of size : 25, with usage of 1 threads time:	
+
+REAL: 1.154948s	USER: 1.154910s	SYSTEM: 0.000000s
+Filtering with filter of size : 25, with usage of 2 threads time:	
+
+REAL: 0.612152s	USER: 1.214152s	SYSTEM: 0.000000s
+Filtering with filter of size : 25, with usage of 4 threads time:	
+
+REAL: 0.690638s	USER: 2.197648s	SYSTEM: 0.003968s
+Filtering with filter of size : 25, with usage of 8 threads time:	
+
+REAL: 0.626516s	USER: 2.346578s	SYSTEM: 0.000000s
+Filtering with filter of size : 20, with usage of 1 threads time:	
+
+REAL: 0.772791s	USER: 0.772545s	SYSTEM: 0.000000s
+Filtering with filter of size : 20, with usage of 2 threads time:	
+
+REAL: 0.415182s	USER: 0.829792s	SYSTEM: 0.000000s
+Filtering with filter of size : 20, with usage of 4 threads time:	
+
+REAL: 0.415341s	USER: 1.468301s	SYSTEM: 0.003969s
+Filtering with filter of size : 20, with usage of 8 threads time:	
+
+REAL: 0.403520s	USER: 1.523916s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 1 threads time:	
+
+REAL: 0.206912s	USER: 0.206786s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 2 threads time:	
+
+REAL: 0.103730s	USER: 0.205945s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 4 threads time:	
+
+REAL: 0.114840s	USER: 0.374945s	SYSTEM: 0.000000s
+Filtering with filter of size : 10, with usage of 8 threads time:	
+
+REAL: 0.107020s	USER: 0.381697s	SYSTEM: 0.000000s
+Filtering with filter of size : 25, with usage of 1 threads time:	
+
+REAL: 1.175425s	USER: 1.175216s	SYSTEM: 0.000102s
+Filtering with filter of size : 25, with usage of 2 threads time:	
+
+REAL: 0.686403s	USER: 1.331463s	SYSTEM: 0.000000s
+Filtering with filter of size : 25, with usage of 4 threads time:	
+
+REAL: 0.684350s	USER: 2.281653s	SYSTEM: 0.000000s
+Filtering with filter of size : 25, with usage of 8 threads time:	
+
+REAL: 0.655331s	USER: 2.296693s	SYSTEM: 0.000000s
